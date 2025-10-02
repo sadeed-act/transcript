@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Document Generator (A4 Full Height Fix with Logos)</title>
+    
+    <style>
+        /* ==================================== */
+        /* A4 PAGE SETUP (CRITICAL FOR PRINTING) */
+        /* ==================================== */
+        :root {
+            /* Standard A4 dimensions in pixels (at ~96 DPI) */
+            --a4-width: 794px;
+            --a4-height: 1123px;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* --- Menu Styles --- */
+        #menu {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            @media print {
+                display: none;
+            }
+        }
+
+        #menu button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+
+        #menu button.active {
+            background-color: #003366;
+            color: white;
+            border-color: #003366;
+        }
+
+        /* --- Document Base Styles --- */
+        .document {
+            /* Enforce A4 size for consistent display and printing */
+            width: var(--a4-width);
+            height: var(--a4-height);
+            margin: 20px auto;
+            padding: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            box-sizing: border-box; 
+        }
+        
+        .document.active {
+            display: block; /* Show the currently active document */
+        }
+
+        /* --- Editable Field Styles (NO BORDERS/OUTLINES) --- */
+        .editable {
+            cursor: text;
+            outline: none; 
+            border: none;
+        }
+        
+        /* ==================================== */
+        /* LOGO IMAGE STYLES (NEW) */
+        /* ==================================== */
+        
+        /* Hide old icon placeholders */
+        .book-icon, .pillar-icon {
+            display: none; 
+        }
+
+        .logo-transcript {
+            width: 180px; /* Adjust size */
+            height: auto;
+            display: block; 
+            margin: 0 auto;
+        }
+
+        .logo-diploma {
+            width: 180px; /* Adjust size */
+            height: auto;
+            display: block; 
+            margin: 0 auto;
+        }
+        
+        /* ==================================== */
+        /* TRANSCRIPT (ABC PRIVATE COLLEGE) STYLES */
+        /* ==================================== */
+        .transcript-style {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .border-frame {
+            border: 10px double #C49A6E; 
+            padding: 30px; /* Padding inside the border */
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        .content-area {
+            text-align: center;
+            /* CRITICAL FIX: Set top padding to 0px to minimize top margin */
+            padding: 10px 20px 20px 20px;
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+        }
+
+        .header-logo { 
+            font-size: 0px; 
+            /* CRITICAL FIX: Ensure no margin below the logo wrapper */
+            margin-bottom: 10px;
+        }
+        
+        .college-name { 
+            font-size: 28px; 
+            color: #003366; 
+            /* CRITICAL FIX: Ensure no margin above the college name */
+            margin-top: 0; 
+            margin-bottom: 0px; 
+        }
+        .record-title { font-size: 24px; margin-bottom: 2px; }
+        .provider-info { font-size: 16px; margin-top: 0; margin-bottom: 40px; }
+        .statement-text { font-size: 18px; margin: 5px 0; }
+        .student-name { font-size: 32px; font-weight: bold; margin: 5px 0 15px 0; }
+        .diploma-title { font-size: 24px; font-weight: bold; margin-top: 5px; margin-bottom: 30px; }
+
+        /* Results Table */
+        .results-table {
+            flex-grow: 1; 
+            width: 65%;
+            margin: 20px auto 30px auto; 
+            text-align: left;
+        }
+        .results-table table { width: 100%; border-collapse: collapse; }
+        .results-table td { 
+            padding: 5px 0; 
+            font-size: 16px;
+            border: none !important; 
+        }
+        .course-code { width: 20%; font-weight: bold; }
+        .course-name { width: 60%; }
+        .grade-column { width: 20%; text-align: right; font-weight: bold; }
+
+        .footer-note { font-size: 12px; text-align: left; margin-bottom: 20px; }
+
+        /* Signature Section (Transcript) */
+        .signature-section-transcript {
+            display: flex;
+            justify-content: flex-start;
+            width: 65%;
+            margin: 0 auto 10px 17.5%;
+            text-align: left;
+        }
+        .sig-block-transcript {
+            text-align: center;
+            width: 300px;
+        }
+        .signature-line { border-top: 1px solid black; height: 1px; margin-bottom: 5px; }
+        .signature-role { font-size: 14px; text-align: center; font-style: italic; }
+
+        /* Footer Info */
+        .footer-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            width: 100%;
+        }
+        .left-footer { text-align: left; font-weight: bold; }
+
+
+        /* ==================================== */
+        /* DIPLOMA (XYZ TECHNICAL) STYLES */
+        /* ==================================== */
+        .diploma-style {
+            background-color: #F8F7F3; 
+            border: 5px solid #C49A6E; 
+            /* CRITICAL FIX: Reduced top padding to 10px to minimize top margin */
+            padding: 10px 50px 50px 50px;
+            box-sizing: border-box;
+            height: 100%;
+            position: relative;
+        }
+
+        .diploma-content {
+            text-align: center;
+            font-family: Georgia, serif; 
+            width: 100%; 
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+        }
+
+        .diploma-header { 
+            /* CRITICAL FIX: Removed margin-bottom to bring header elements closer */
+            margin: bottom 10px; 
+        }
+
+        .college-name-diploma { 
+            font-size: 22px; 
+            font-weight: normal; 
+            letter-spacing: 1px; 
+            /* CRITICAL FIX: Removed margin-top to position it right below the logo */
+            margin-top: 10px 
+            margin-bottom: 30px; 
+        }
+        .diploma-main-title { font-size: 40px; font-weight: normal; line-height: 1.1; margin-bottom: 20px; }
+        .diploma-main-title span { font-weight: bold; }
+        .certify-text { font-size: 18px; margin: 5px 0; }
+        .student-name-diploma { font-size: 36px; font-weight: bold; margin: 10px 0 15px 0; }
+        .course-focus { font-size: 30px; font-weight: bold; margin: 15px 0; }
+        .institute-award { font-size: 20px; font-weight: bold; margin: 5px 0 30px 0; }
+
+        /* Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 10px;
+            width: 70%;
+            margin: 40px auto;
+            text-align: left;
+            font-size: 16px;
+        }
+        .detail-label { margin-bottom: 0; font-weight: bold; }
+        .detail-subtext { margin-top: 0; font-style: italic; }
+
+        /* Signatures (Diploma) */
+        .signatures-diploma {
+            display: flex;
+            justify-content: space-around;
+            width: 60%;
+            margin: 50px auto 0 auto;
+        }
+        .signature-block { width: 40%; text-align: center; }
+        .signature-block hr { border: 0; border-top: 1px solid black; margin-bottom: 5px; }
+
+        .stamp {
+            width: 80px; height: 80px; border: 2px solid #C49A6E; border-radius: 50%;
+            position: absolute;
+            top: 70%; 
+            right: 10%; 
+            transform: translateY(-50%);
+            line-height: 80px; font-size: 10px; color: #C49A6E; 
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="menu">
+        <button id="btnTranscript">Transcript</button>
+        <button id="btnDiploma">Certificate</button>
+    </div>
+
+    <div class="document transcript-style" id="transcript">
+        <div class="border-frame">
+            <div class="content-area">
+                <div class="header-logo">
+                    <img src="logo.png" alt="ABC College Logo" class="logo-transcript editable" data-field="logoImage1">
+                </div>
+                <h1 class="college-name editable" data-field="collegeName1">ABC PRIVATE COLLEGE</h1>
+                <p class="record-title editable" data-field="recordTitle">Record of Results</p>
+                <p class="provider-info editable" data-field="providerInfo">Private Provider Number: XXXX</p>
+
+                <p class="statement-text">This is a statement that</p>
+                <h2 class="student-name editable" data-field="studentName1">Student Name</h2>
+                <p class="statement-text">has attained</p>
+                <h3 class="diploma-title editable" data-field="diplomaTitle1">Diploma in Business Studies</h3>
+
+                <div class="results-table">
+                    <table>
+                        <tbody>
+                            <tr class="course-row"><td class="course-code editable" data-field="code1">UC101</td><td class="course-name editable" data-field="course1">Introduction to Studies</td><td class="grade-column editable" data-field="grade1">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code2">UC102</td><td class="course-name editable" data-field="course2">Academic Writing</td><td class="grade-column editable" data-field="grade2">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code3">UC103</td><td class="course-name editable" data-field="course3">Computer Skills</td><td class="grade-column editable" data-field="grade3">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code4">UC104</td><td class="course-name editable" data-field="course4">Business Basics</td><td class="grade-column editable" data-field="grade4">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code5">UC105</td><td class="course-name editable" data-field="course5">Accounting Principles</td><td class="grade-column editable" data-field="grade5">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code6">UC106</td><td class="course-name editable" data-field="course6">Marketing Fundamentals</td><td class="grade-column editable" data-field="grade6">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code7">UC107</td><td class="course-name editable" data-field="course7">Communication Skills</td><td class="grade-column editable" data-field="grade7">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code8">UC108</td><td class="course-name editable" data-field="course8">Project Management</td><td class="grade-column editable" data-field="grade8">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code9">UC109</td><td class="course-name editable" data-field="course9">Leadership Studies</td><td class="grade-column editable" data-field="grade9">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code10">UC110</td><td class="course-name editable" data-field="course10">Information Systems</td><td class="grade-column editable" data-field="grade10">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code11">UC111</td><td class="course-name editable" data-field="course11">Research Methods</td><td class="grade-column editable" data-field="grade11">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code12">UC112</td><td class="course-name editable" data-field="course12">Capstone Project</td><td class="grade-column editable" data-field="grade12">C</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="footer-note">
+                    These competencies listed above have been delivered by <span class="editable" data-field="collegeName1Foot">ABC Private College</span>.
+                    This program is not nationally accredited and is provided solely as a record of results.
+                </p>
+
+                <div class="signature-section-transcript">
+                    <div class="sig-block-transcript">
+                        <div class="signature-line"></div>
+                        <p class="signature-role editable" data-field="signatureRole1">Registrar Signature</p>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <span class="left-footer editable" data-field="footerLeft">Registrar</span>
+                    <span class="right-footer">
+                        Document No: <span class="editable" data-field="docNo">I-12345</span> | Issued on <span class="editable" data-field="issueDate1">2nd October 2025</span>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="document diploma-style" id="diploma">
+        <div class="diploma-content">
+            <div class="diploma-header">
+                <div class="logo-columns">
+                    <img src="logo.png" alt="XYZ Institute Logo" class="logo-diploma editable" data-field="logoImage2">
+                </div>
+                <h1 class="college-name-diploma editable" data-field="collegeName2">XYZ TECHNICAL TRAINING INSTITUTE</h1>
+            </div>
+
+            <h2 class="diploma-main-title">DIPLOMA IN <span class="editable" data-field="diplomaTitle2">CIVIL DRAFTING</span></h2>
+
+            <p class="certify-text">This is to certify that</p>
+            <h3 class="student-name-diploma editable" data-field="studentName2">Mr. Ali Khan</h3>
+            <p class="certify-text">has successfully completed the prescribed course<br>of study and training in</p>
+            <h4 class="course-focus editable" data-field="courseFocus">Civil Drafting</h4>
+            <p class="certify-text">of <span class="editable" data-field="durationText">one year's duration</span>, conducted by</p>
+            <p class="institute-award editable" data-field="instituteAward">XYZ Technical Training Institute</p>
+            <p class="certify-text">and is therefore awarded this Diploma.</p>
+
+            <div class="details-grid">
+                <div>
+                    <p class="detail-label">Duration: <span class="editable" data-field="durationNum">12 Months</span></p>
+                    <p class="detail-subtext editable" data-field="durationRange">(Jan 2024 - Dec 2024)</p>
+                </div>
+                <div>
+                    <p class="detail-label">Date: <span class="editable" data-field="date">27 December</span></p>
+                    <p class="detail-subtext editable" data-field="year">2024</p>
+                </div>
+                <div>
+                    <p class="detail-label">Subjects: <span class="editable" data-field="subjects">AutoCAD, Technical<br>Drawing, Building Design, etc.</span></p>
+                </div>
+                <div>
+                    <p class="detail-label">Place: <span class="editable" data-field="place">Lahore</span></p>
+                </div>
+            </div>
+
+            <div class="signatures-diploma">
+                <div class="signature-block">
+                    <hr>
+                    <p class="signature-role editable" data-field="rolePrincipal">Principal</p>
+                </div>
+                <div class="signature-block">
+                    <hr>
+                    <p class="signature-role editable" data-field="roleHead">Head of Training</p>
+                </div>
+            </div>
+
+             <div class="stamp editable" data-field="stampText">
+                 <p style="transform: rotate(-30deg); margin: 0; user-select: none;">XYZ TECHNICAL</p>
+             </div>
+
+        </div>
+    </div>
+    
+    <script>
+        // Function to toggle the active document view
+        function showDocument(docId) {
+            const documents = document.querySelectorAll('.document');
+            const buttons = document.querySelectorAll('#menu button');
+
+            // 1. Hide all documents and deactivate all buttons
+            documents.forEach(doc => doc.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 2. Show the selected document and activate its button
+            const activeDoc = document.getElementById(docId);
+            const activeButton = document.getElementById(`btn${docId.charAt(0).toUpperCase() + docId.slice(1)}`);
+
+            if (activeDoc) {
+                activeDoc.classList.add('active');
+            }
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. Setup Document Switching ---
+            document.getElementById('btnTranscript').addEventListener('click', () => showDocument('transcript'));
+            document.getElementById('btnDiploma').addEventListener('click', () => showDocument('diploma'));
+            
+            // Show the Transcript by default on load
+            showDocument('transcript'); 
+
+            // --- 2. Setup Editability (without visual cues) ---
+            document.querySelectorAll('.editable').forEach(element => {
+                element.setAttribute('contenteditable', 'true');
+            });
+        });
+    </script>
+</body>
+</html>
