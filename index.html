@@ -136,14 +136,14 @@
         }
         .record-title { font-size: 24px; margin-bottom: 2px; }
         .provider-info { font-size: 16px; margin-top: 0; margin-bottom: 40px; }
-        .statement-text { font-size: 18px; margin: 5px 0; }
-        .student-name { font-size: 32px; font-weight: bold; margin: 5px 0 15px 0; }
+        .statement-text { font-size: 20px; margin: 5px 0; }
+        .student-name { font-size: 32px; font-weight: bold; margin: 5px 0 15px 0; font-style: italic;}
         .diploma-title { font-size: 24px; font-weight: bold; margin-top: 5px; margin-bottom: 30px; }
 
         /* Results Table */
         .results-table {
             flex-grow: 1; 
-            width: 65%;
+            width: 85%;
             margin: 20px auto 30px auto; 
             text-align: left;
         }
@@ -153,9 +153,9 @@
             font-size: 16px;
             border: none !important; 
         }
-        .course-code { width: 20%; font-weight: bold; }
-        .course-name { width: 60%; }
-        .grade-column { width: 20%; text-align: right; font-weight: bold; }
+        .course-code { width: 15%; font-weight: bold; }
+        .course-name { width: 70%; }
+        .grade-column { width: 15%; text-align: right; font-weight: bold; }
 
         .footer-note { font-size: 12px; text-align: left; margin-bottom: 20px; }
 
@@ -163,16 +163,16 @@
         .signature-section-transcript {
             display: flex;
             justify-content: flex-start;
-            width: 65%;
+            width: 50%;
             margin: 0 auto 10px 17.5%;
-            text-align: left;
+            text-align: right;
         }
         .sig-block-transcript {
             text-align: center;
             width: 300px;
         }
         .signature-line { border-top: 1px solid black; height: 1px; margin-bottom: 5px; }
-        .signature-role { font-size: 14px; text-align: center; font-style: italic; }
+        .signature-role { font-size: 14px; text-align: right; font-style: italic; }
 
         /* Footer Info */
         .footer-info {
@@ -248,7 +248,7 @@
             width: 60%;
             margin: 50px auto 0 auto;
         }
-        .signature-block { width: 40%; text-align: center; }
+        .signature-block { width: 40%; text-align:left; }
         .signature-block hr { border: 0; border-top: 1px solid black; margin-bottom: 5px; }
 
         .stamp {
@@ -280,47 +280,43 @@
                 <div class="header-logo">
                     <img src="logo.png" alt="ABC College Logo" class="logo-transcript editable" data-field="logoImage1">
                 </div>
-                <h1 class="college-name editable" data-field="collegeName1">ABC PRIVATE COLLEGE</h1>
+                <h1 class="college-name editable" data-field="collegeName1">GLOBAL CAREER DEVELOPMENT INSTITUTE</h1>
                 <p class="record-title editable" data-field="recordTitle">Record of Results</p>
-                <p class="provider-info editable" data-field="providerInfo">Private Provider Number: XXXX</p>
 
                 <p class="statement-text">This is a statement that</p>
-                <h2 class="student-name editable" data-field="studentName1">Student Name</h2>
+                <h2 class="student-name editable" data-field="studentName1">Asad Subhani</h2>
                 <p class="statement-text">has attained</p>
-                <h3 class="diploma-title editable" data-field="diplomaTitle1">Diploma in Business Studies</h3>
+                <h3 class="diploma-title editable" data-field="diplomaTitle1">Diploma in Civil Engineering Drafting</h3>
 
                 <div class="results-table">
                     <table>
                         <tbody>
-                            <tr class="course-row"><td class="course-code editable" data-field="code1">UC101</td><td class="course-name editable" data-field="course1">Introduction to Studies</td><td class="grade-column editable" data-field="grade1">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code2">UC102</td><td class="course-name editable" data-field="course2">Academic Writing</td><td class="grade-column editable" data-field="grade2">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code3">UC103</td><td class="course-name editable" data-field="course3">Computer Skills</td><td class="grade-column editable" data-field="grade3">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code4">UC104</td><td class="course-name editable" data-field="course4">Business Basics</td><td class="grade-column editable" data-field="grade4">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code5">UC105</td><td class="course-name editable" data-field="course5">Accounting Principles</td><td class="grade-column editable" data-field="grade5">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code6">UC106</td><td class="course-name editable" data-field="course6">Marketing Fundamentals</td><td class="grade-column editable" data-field="grade6">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code7">UC107</td><td class="course-name editable" data-field="course7">Communication Skills</td><td class="grade-column editable" data-field="grade7">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code8">UC108</td><td class="course-name editable" data-field="course8">Project Management</td><td class="grade-column editable" data-field="grade8">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code9">UC109</td><td class="course-name editable" data-field="course9">Leadership Studies</td><td class="grade-column editable" data-field="grade9">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code10">UC110</td><td class="course-name editable" data-field="course10">Information Systems</td><td class="grade-column editable" data-field="grade10">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code11">UC111</td><td class="course-name editable" data-field="course11">Research Methods</td><td class="grade-column editable" data-field="grade11">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code12">UC112</td><td class="course-name editable" data-field="course12">Capstone Project</td><td class="grade-column editable" data-field="grade12">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code1">UC101</td><td class="course-name editable" data-field="course1">Drafting Funamentals</td><td class="grade-column editable" data-field="grade1">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code2">UC102</td><td class="course-name editable" data-field="course2">Technical Lettering and Dimensioning</td><td class="grade-column editable" data-field="grade2">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code3">UC103</td><td class="course-name editable" data-field="course3">Geometrical Constructions and Engineering Curves</td><td class="grade-column editable" data-field="grade3">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code4">UC104</td><td class="course-name editable" data-field="course4">Orthographic and Projection Techniques</td><td class="grade-column editable" data-field="grade4">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code5">UC105</td><td class="course-name editable" data-field="course5">Pictorial and Sectional Drawings</td><td class="grade-column editable" data-field="grade5">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code6">UC106</td><td class="course-name editable" data-field="course6">Engineering Symbols and Conventions</td><td class="grade-column editable" data-field="grade6">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code7">UC107</td><td class="course-name editable" data-field="course7">Building Drafting (Residential and Small Structures)</td><td class="grade-column editable" data-field="grade7">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code8">UC108</td><td class="course-name editable" data-field="course8">Structural Drafting</td><td class="grade-column editable" data-field="grade8">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code9">UC109</td><td class="course-name editable" data-field="course9">Civil Infrastructure Drafting</td><td class="grade-column editable" data-field="grade9">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code10">UC110</td><td class="course-name editable" data-field="course10">Computer-Aided Drafting and Design (CAD)</td><td class="grade-column editable" data-field="grade10">C</td></tr>
                         </tbody>
                     </table>
                 </div>
 
                 <p class="footer-note">
-                    These competencies listed above have been delivered by <span class="editable" data-field="collegeName1Foot">ABC Private College</span>.
-                    This program is not nationally accredited and is provided solely as a record of results.
+                    The student has successfully completed the competencies listed above.<span class="editable" data-field="collegeName1Foot"></span>.
                 </p>
 
                 <div class="signature-section-transcript">
                     <div class="sig-block-transcript">
                         <div class="signature-line"></div>
-                        <p class="signature-role editable" data-field="signatureRole1">Registrar Signature</p>
+                        <p class="signature-role editable" data-field="signatureRole1">Principal Signature</p>
                     </div>
                 </div>
                 <div class="footer-info">
-                    <span class="left-footer editable" data-field="footerLeft">Registrar</span>
+                    <span class="left-footer editable" data-field="footerLeft"></span>
                     <span class="right-footer">
                         Document No: <span class="editable" data-field="docNo">I-12345</span> | Issued on <span class="editable" data-field="issueDate1">2nd October 2025</span>
                     </span>
