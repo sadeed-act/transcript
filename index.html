@@ -157,27 +157,30 @@
         .course-name { width: 70%; }
         .grade-column { width: 15%; text-align: right; font-weight: bold; }
 
-        .footer-note { font-size: 12px; text-align: left; margin-bottom: 20px; }
+        .footer-note { font-size: 12px; text-align: center; margin-bottom: 120px; }
 
-        /* Signature Section (Transcript) */
+        /* Signature Section (Transcript) - CORRECTED FOR RIGHT ALIGNMENT */
         .signature-section-transcript {
             display: flex;
-            justify-content: flex-start;
-            width: 50%;
-            margin: 0 auto 10px 17.5%;
-            text-align: right;
+            /* Align the content (sig-block) to the right */
+            justify-content: flex-end; 
+            /* Use 100% width of content area */
+            width: 100%; 
+            margin: 0 auto 10px auto;
+            /* Add padding-right to align the signature block with the right edge of the 85% wide centered table (100-85)/2 = 7.5% */
+            padding-right: 7.5%; 
         }
         .sig-block-transcript {
             text-align: center;
             width: 300px;
         }
         .signature-line { border-top: 1px solid black; height: 1px; margin-bottom: 5px; }
-        .signature-role { font-size: 14px; text-align: right; font-style: italic; }
+        .signature-role { font-size: 14px; text-align: center; font-style: italic; }
 
         /* Footer Info */
         .footer-info {
             display: flex;
-            justify-content: space-between;
+            justify-content: left;
             font-size: 14px;
             width: 100%;
         }
@@ -188,7 +191,7 @@
         /* DIPLOMA (XYZ TECHNICAL) STYLES */
         /* ==================================== */
         .diploma-style {
-            background-color: #F8F7F3; 
+            background-color: white; 
             border: 5px solid #C49A6E; 
             /* CRITICAL FIX: Reduced top padding to 10px to minimize top margin */
             padding: 10px 50px 50px 50px;
@@ -215,16 +218,16 @@
 
         .college-name-diploma { 
             font-size: 22px; 
-            font-weight: normal; 
+            font-weight: bold; 
             letter-spacing: 1px; 
             /* CRITICAL FIX: Removed margin-top to position it right below the logo */
             margin-top: 10px 
             margin-bottom: 30px; 
         }
         .diploma-main-title { font-size: 40px; font-weight: normal; line-height: 1.1; margin-bottom: 20px; }
-        .diploma-main-title span { font-weight: bold; }
+        .diploma-main-title span { font-weight: normal; }
         .certify-text { font-size: 18px; margin: 5px 0; }
-        .student-name-diploma { font-size: 36px; font-weight: bold; margin: 10px 0 15px 0; }
+        .student-name-diploma { font-size: 30px; font-weight: bold; margin: 10px 0 15px 0; font-style: italic; }
         .course-focus { font-size: 30px; font-weight: bold; margin: 15px 0; }
         .institute-award { font-size: 20px; font-weight: bold; margin: 5px 0 30px 0; }
 
@@ -244,11 +247,11 @@
         /* Signatures (Diploma) */
         .signatures-diploma {
             display: flex;
-            justify-content: space-around;
-            width: 60%;
+            justify-content: flex-end;
+            width: 80%;
             margin: 50px auto 0 auto;
         }
-        .signature-block { width: 40%; text-align:left; }
+        .signature-block { width: 40%; text-align:center; }
         .signature-block hr { border: 0; border-top: 1px solid black; margin-bottom: 5px; }
 
         .stamp {
@@ -333,17 +336,17 @@
                 <div class="logo-columns">
                     <img src="logo.png" alt="XYZ Institute Logo" class="logo-diploma editable" data-field="logoImage2">
                 </div>
-                <h1 class="college-name-diploma editable" data-field="collegeName2">XYZ TECHNICAL TRAINING INSTITUTE</h1>
+                <h1 class="college-name-diploma editable" data-field="collegeName2">GLOBAL CAREER DEVELOPMENT INSTITUTE</h1>
             </div>
 
-            <h2 class="diploma-main-title">DIPLOMA IN <span class="editable" data-field="diplomaTitle2">CIVIL DRAFTING</span></h2>
+            <h2 class="diploma-main-title">DIPLOMA IN <span class="editable" data-field="diplomaTitle2"> <br> Civil Engineering Drafting</span></h2>
 
             <p class="certify-text">This is to certify that</p>
-            <h3 class="student-name-diploma editable" data-field="studentName2">Mr. Ali Khan</h3>
+            <h3 class="student-name-diploma editable" data-field="studentName2">Mr. Asad Subhani</h3>
             <p class="certify-text">has successfully completed the prescribed course<br>of study and training in</p>
             <h4 class="course-focus editable" data-field="courseFocus">Civil Drafting</h4>
             <p class="certify-text">of <span class="editable" data-field="durationText">one year's duration</span>, conducted by</p>
-            <p class="institute-award editable" data-field="instituteAward">XYZ Technical Training Institute</p>
+            <p class="institute-award editable" data-field="instituteAward">Global Career Development Institute</p>
             <p class="certify-text">and is therefore awarded this Diploma.</p>
 
             <div class="details-grid">
@@ -352,15 +355,11 @@
                     <p class="detail-subtext editable" data-field="durationRange">(Jan 2024 - Dec 2024)</p>
                 </div>
                 <div>
-                    <p class="detail-label">Date: <span class="editable" data-field="date">27 December</span></p>
+                    <p class="detail-label">Date: <span class="editable" data-field="date">27 December</span>ignat</p>
                     <p class="detail-subtext editable" data-field="year">2024</p>
                 </div>
-                <div>
-                    <p class="detail-label">Subjects: <span class="editable" data-field="subjects">AutoCAD, Technical<br>Drawing, Building Design, etc.</span></p>
-                </div>
-                <div>
-                    <p class="detail-label">Place: <span class="editable" data-field="place">Lahore</span></p>
-                </div>
+               
+                
             </div>
 
             <div class="signatures-diploma">
@@ -368,14 +367,10 @@
                     <hr>
                     <p class="signature-role editable" data-field="rolePrincipal">Principal</p>
                 </div>
-                <div class="signature-block">
-                    <hr>
-                    <p class="signature-role editable" data-field="roleHead">Head of Training</p>
-                </div>
+               
             </div>
 
-             <div class="stamp editable" data-field="stampText">
-                 <p style="transform: rotate(-30deg); margin: 0; user-select: none;">XYZ TECHNICAL</p>
+             
              </div>
 
         </div>
