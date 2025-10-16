@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Editable Payslip (Auto words)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#fafafa; padding:18px; }
+  .payslip {
+    max-width:820px;
+    margin:auto;
+    background:#fff;
+    padding:18px;
+    border:1px solid #ccc;
+  }
+  .header { display:flex; gap:14px; align-items:center; border-bottom:1px solid #e6e6e6; padding-bottom:12px; }
+  .logo {
+    width:70px; height:70px; overflow:hidden; flex-shrink:0;
+  }
+  .logo img { width:100%; height:100%; object-fit:cover; }
+  h2, p { margin:0; }
+  label.small { font-size:13px; color:#333; margin-right:8px; }
+  input[type="text"] { border:0; border-bottom:1px dashed #bbb; padding:4px 6px; min-width:120px; }
+  input[type="number"] { width:120px; padding:6px 8px; text-align:right; border:1px solid #ddd; border-radius:4px; }
+  table { width:100%; border-collapse:collapse; margin-top:14px; }
+  th, td { padding:10px 8px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+  th { text-align:left; font-weight:600; }
+  .right { text-align:right; }
+  .totals { margin-top:12px; display:flex; justify-content:space-between; align-items:center; }
+  .note { margin-top:12px; font-size:13px; color:#666; }
+  button { padding:8px 10px; border-radius:6px; border:1px solid #888; background:#fff; cursor:pointer; }
+
+  /* ===== A4 Print Layout ===== */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .payslip {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      border: none;
+      box-shadow: none;
+      page-break-after: always;
+      padding: 20mm;
+    }
+    button { display:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="payslip">
+    <div class="header">
+      <div class="logo"><img src="logo.png" alt="Company Logo"></div>
+      <div style="flex:1">
+        <h2 contenteditable="true">XYZ Enterprises</h2>
+        <p contenteditable="true">123 Market Road, Lahore — +92 42 1234 5678</p>
+      </div>
+      <div style="text-align:right">
+        <div><label class="small">Payslip for:</label><input id="period" type="text" value="August 2025"></div>
+        <div style="margin-top:6px"><label class="small">Pay Date:</label><input id="paydate" type="text" value="31-Aug-2025"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div style="display:flex; gap:18px; align-items:center;">
+        <div><label class="small">Employee Name:</label><input id="ename" type="text" value="Asad Khan"></div>
+        <div><label class="small">Designation:</label><input id="desg" type="text" value="Civil Draftperson"></div>
+        <div><label class="small">Employee ID:</label><input id="eid" type="text" value="EMP-045"></div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Earnings</th><th class="right">Amount (PKR)</th></tr>
+      </thead>
+      <tbody id="earnings">
+        <tr><td>Basic Salary</td><td class="right"><input class="earning" type="number" min="0" step="0.01" value="80000"></td></tr>
+        <tr><td>House Allowance</td><td class="right"><input class="earning" type="number" min="0" step="0.01" value="20000"></td></tr>
+        <tr><td>Conveyance</td><td class="right"><input class="earning" type="number" min="0" step="0.01" value="6000"></td></tr>
+        <tr><td>Medical Allowance</td><td class="right"><input class="earning" type="number" min="0" step="0.01" value="4000"></td></tr>
+        <tr><td>Other Allowance</td><td class="right"><input class="earning" type="number" min="0" step="0.01" value="2000"></td></tr>
+      </tbody>
+
+      <thead>
+        <tr><th>Deductions</th><th class="right">Amount (PKR)</th></tr>
+      </thead>
+      <tbody id="deductions">
+        <tr><td>Deductions</td><td class="right"><input class="deduction" type="number" min="0" step="0.01" value="5000"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div>
+        <div class="small">Gross Pay: <strong id="grossText">0</strong></div>
+        <div class="small">Total Deductions: <strong id="dedText">0</strong></div>
+      </div>
+      <div style="text-align:right">
+        <div><strong>Net Pay (Cash): PKR <span id="netText">0</span></strong></div>
+        <div style="font-size:13px; color:#444">In words: <em><span id="inWords">zero rupees only.</span></em></div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:10px;">
+      <button id="calcBtn">Calculate Total</button>
+      <button id="addE">+ Add Earning</button>
+      <button id="addD">+ Add Deduction</button>
+    </div>
+
+    <div class="note">This is a computer generated payslip. Keep this receipt as proof of cash payment.</div>
+  </div>
+
+<script>
+function numberToWords(num) {
+  num = Math.floor(Math.abs(Number(num) || 0));
+  if (num === 0) return 'zero';
+  const units = ['', 'one','two','three','four','five','six','seven','eight','nine','ten',
+    'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens = ['', '', 'twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  function twoDigits(n){ if(n<20)return units[n];const t=Math.floor(n/10);const u=n%10;return tens[t]+(u?' '+units[u]:'');}
+  function threeDigits(n){const h=Math.floor(n/100);const r=n%100;return(h?units[h]+' hundred'+(r?' and ':''):'')+(r?twoDigits(r):'');}
+  const crore=Math.floor(num/10000000),lakh=Math.floor((num%10000000)/100000),thousand=Math.floor((num%100000)/1000),remainder=num%1000;
+  let p=[];if(crore)p.push(threeDigits(crore)+' crore');if(lakh)p.push(threeDigits(lakh)+' lakh');if(thousand)p.push(threeDigits(thousand)+' thousand');if(remainder)p.push(threeDigits(remainder));
+  return p.join(' ').replace(/\s+/g,' ').trim();
+}
+function getNumericValue(i){const n=parseFloat(i.value);return isFinite(n)?n:0;}
+function calculateAndRender(){
+  const earnings=document.querySelectorAll('.earning'),deductions=document.querySelectorAll('.deduction');
+  let gross=0;earnings.forEach(e=>gross+=getNumericValue(e));let ded=0;deductions.forEach(d=>ded+=getNumericValue(d));
+  const net=gross-ded;
+  document.getElementById('grossText').textContent=gross.toLocaleString();
+  document.getElementById('dedText').textContent=ded.toLocaleString();
+  document.getElementById('netText').textContent=net.toLocaleString();
+  const w=numberToWords(net);
+  document.getElementById('inWords').textContent=(w?(w.charAt(0).toUpperCase()+w.slice(1)):'')+' rupees only.';
+}
+function addRow(id,label,cls){
+  const tb=document.getElementById(id),tr=document.createElement('tr'),td1=document.createElement('td');td1.textContent=label||'New item';
+  const td2=document.createElement('td');td2.className='right';const inp=document.createElement('input');inp.type='number';inp.min='0';inp.step='0.01';inp.value='0';inp.className=cls;inp.addEventListener('input',calculateAndRender);
+  td2.appendChild(inp);tr.appendChild(td1);tr.appendChild(td2);tb.appendChild(tr);
+}
+document.getElementById('calcBtn').addEventListener('click',calculateAndRender);
+document.addEventListener('input',e=>{if(e.target&&(e.target.classList.contains('earning')||e.target.classList.contains('deduction')))calculateAndRender();});
+document.getElementById('addE').addEventListener('click',()=>addRow('earnings','New Earning','earning'));
+document.getElementById('addD').addEventListener('click',()=>addRow('deductions','New Deduction','deduction'));
+window.addEventListener('load',calculateAndRender);
+</script>
+</body>
+</html>
