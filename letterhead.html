@@ -92,12 +92,28 @@ body {
   height: 70px;
 }
 
+/* ---------- REF & DATE BELOW HEADER ---------- */
+.ref-date {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 70px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-style: italic;
+  z-index: 2;
+  position: relative;
+}
+
+.ref-date p {
+  margin: 0;
+  font-style: italic;
+}
+
 /* ---------- BODY ---------- */
 .body {
   flex: 1;
-  padding: 40px 70px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 20px 70px 40px;
+  margin-top: 10px;
   text-align: justify;
   font-size: 15px;
   line-height: 1.6;
@@ -113,20 +129,8 @@ body {
 .body h2[contenteditable="true"] {
   text-align: center;
   margin-bottom: 25px;
+  margin-top: 15px;
   font-size: 20px;
-}
-
-/* ---------- DATE + REF LINE ---------- */
-.ref-date {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  font-size: 15px;
-  font-style: italic;
-}
-.ref-date p {
-  margin: 0;
-  font-style: italic;
 }
 
 /* ---------- FOOTER ---------- */
@@ -206,29 +210,22 @@ button:hover {
     <div class="right-grey"></div>
   </div>
 
+  <!-- REF & DATE MOVED HERE -->
+  <div class="ref-date">
+    <p contenteditable="true">Ref: GLSC/PVT/2025/10/001</p>
+    <p contenteditable="true">November 17, 2025</p>
+  </div>
+
   <!-- BODY -->
   <div class="body">
     <h2 contenteditable="true">Letter of Employment</h2>
 
-    <div class="ref-date">
-      <p contenteditable="true">Ref: GLSC/PVT/2025/10/001</p>
-      <p contenteditable="true">November 17, 2025</p>
-    </div>
-
-    <p contenteditable="true">To,<br> Mr. [Employee Name] <br> [Position Title]</p>
-
     <p contenteditable="true">
-      We are pleased to confirm your employment with Global Land Survey Consultants (Private) Limited.
-      This letter serves as formal documentation of your appointment and outlines the terms of your role and responsibilities.
+      To,<br> Mr. [Employee Name] <br> [Position Title]
     </p>
 
     <p contenteditable="true">
-      Your duties will include managing site operations, preparing reports, and assisting in project coordination as required.
-      You are expected to perform your tasks with dedication and professionalism.
-    </p>
-
-    <p contenteditable="true">
-      We look forward to your valuable contribution to our team.
+      We are pleased to confirm your employment with Global Land Survey Consultants (Private) Limited. This letter serves as formal documentation of your appointment and outlines the terms of your role and responsibilities. Your duties will include managing site operations, preparing reports, and assisting in project coordination as required. You are expected to perform your tasks with dedication and professionalism, and we look forward to your valuable contribution to our team.
     </p>
 
     <p contenteditable="true">
@@ -249,12 +246,10 @@ button:hover {
   </div>
 </div>
 
-<!-- DOWNLOAD BUTTON -->
-
 <!-- JS PDF LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-document.getElementById("downloadBtn").addEventListener("click", function () {
+document.getElementById("downloadBtn")?.addEventListener("click", function () {
   const element = document.getElementById("letterPage");
   const opt = {
     margin: [0, 0, 0, 0],
