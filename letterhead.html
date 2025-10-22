@@ -113,12 +113,14 @@ body {
 .body {
   flex: 1;
   padding: 20px 70px 40px;
-  margin-top: 10px;
   text-align: justify;
   font-size: 15px;
   line-height: 1.6;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* adds consistent spacing between elements */
 }
 
 [contenteditable="true"] {
@@ -128,9 +130,13 @@ body {
 
 .body h2[contenteditable="true"] {
   text-align: center;
-  margin-bottom: 25px;
-  margin-top: 15px;
+  margin: 10px 0 15px;
   font-size: 20px;
+}
+
+/* When "To" paragraph is empty, remove space */
+.body p:empty {
+  display: none;
 }
 
 /* ---------- FOOTER ---------- */
@@ -179,23 +185,6 @@ body {
   clip-path: polygon(0 100%, 100% 100%, 100% 0, 30% 0);
   z-index: 1;
 }
-
-/* ---------- BUTTON ---------- */
-button {
-  margin: 20px auto;
-  display: block;
-  padding: 10px 25px;
-  background: #555c64;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-button:hover {
-  background: #c86b77;
-}
 </style>
 </head>
 <body>
@@ -210,7 +199,7 @@ button:hover {
     <div class="right-grey"></div>
   </div>
 
-  <!-- REF & DATE MOVED HERE -->
+  <!-- REF & DATE -->
   <div class="ref-date">
     <p contenteditable="true">Ref: GLSC/PVT/2025/10/001</p>
     <p contenteditable="true">November 17, 2025</p>
@@ -220,9 +209,7 @@ button:hover {
   <div class="body">
     <h2 contenteditable="true">Letter of Employment</h2>
 
-    <p contenteditable="true">
-      To,<br> Mr. [Employee Name] <br> [Position Title]
-    </p>
+    <p contenteditable="true">To,<br> Mr. [Employee Name] <br> [Position Title]</p>
 
     <p contenteditable="true">
       We are pleased to confirm your employment with Global Land Survey Consultants (Private) Limited. This letter serves as formal documentation of your appointment and outlines the terms of your role and responsibilities. Your duties will include managing site operations, preparing reports, and assisting in project coordination as required. You are expected to perform your tasks with dedication and professionalism, and we look forward to your valuable contribution to our team.
@@ -245,22 +232,6 @@ button:hover {
     </div>
   </div>
 </div>
-
-<!-- JS PDF LIBRARY -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-document.getElementById("downloadBtn")?.addEventListener("click", function () {
-  const element = document.getElementById("letterPage");
-  const opt = {
-    margin: [0, 0, 0, 0],
-    filename: 'Letterhead_A4.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
-  };
-  html2pdf().from(element).set(opt).save();
-});
-</script>
 
 </body>
 </html>
