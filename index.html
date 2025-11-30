@@ -11,8 +11,8 @@
         /* ==================================== */
         :root {
             /* Standard A4 dimensions in pixels (at ~96 DPI) */
-            --a4-width: 794px;
-            --a4-height: 1123px;
+            --a4-width: 210mm;
+            --a4-height: 297mm;
         }
         
         body {
@@ -155,9 +155,9 @@
         }
         .course-code { width: 15%; font-weight: bold; }
         .course-name { width: 70%; }
-        .grade-column { width: 15%; text-align: right; font-weight: bold; }
+        .grade-column { width: 15%; text-align: center; font-weight: bold; }
 
-        .footer-note { font-size: 12px; text-align: left; margin-bottom: 120px; }
+        .footer-note {margin: 20px auto 30px auto; font-size: 12px; text-align: left; margin-bottom: 120px; }
 
         /* Signature Section (Transcript) - CORRECTED FOR RIGHT ALIGNMENT */
         .signature-section-transcript {
@@ -190,19 +190,35 @@
         /* ==================================== */
         /* DIPLOMA (XYZ TECHNICAL) STYLES */
         /* ==================================== */
-        .diploma-style {
-            background-color: white; 
-            border: 5px solid #C49A6E; 
-            /* CRITICAL FIX: Reduced top padding to 10px to minimize top margin */
-            padding: 10px 50px 50px 50px;
-            box-sizing: border-box;
-            height: 100%;
-            position: relative;
-        }
+        
+    .diploma-style {
+    width: 297mm;  /* landscape width */
+    height: 210mm;  /* landscape height */
+    position: relative;  /* needed for absolute elements */
+    background-color: white;
+    border: 5px solid #C49A6E;
+    padding: 20px 50px;
+    box-sizing: border-box;
+}
 
+        /* Certificate number - top left of diploma page */
+.certificate-number {
+    position: absolute; /* Float over page */
+    top: 20px;          /* Distance from top */
+    left: 20px;         /* Distance from left */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.logo-diploma {
+    width: 180px;
+    height: auto;
+    display: block;
+    margin: 30px auto 20px auto; /* 80px from top for print-safe spacing */
+}
         .diploma-content {
             text-align: center;
-            font-family: Georgia, serif; 
+            font-family: 'Times New Roman', Times, serif; 
             width: 100%; 
             height: 100%;
             box-sizing: border-box;
@@ -241,6 +257,20 @@
             text-align: left;
             font-size: 16px;
         }
+        .details-grid {
+    display: flex;
+    justify-content: space-between; /* Push left and right blocks apart */
+    width: 70%;   /* Or any width that fits your diploma */
+    margin: 40px auto;
+    text-align: left;
+    font-size: 16px;
+}
+
+.detail-left, .detail-right {
+    display: flex;
+    flex-direction: column;
+}
+
         .detail-label { margin-bottom: 0; font-weight: bold; }
         .detail-subtext { margin-top: 0; font-style: italic; }
 
@@ -267,6 +297,67 @@
             align-items: center;
             justify-content: center;
         }
+        .diploma-address {
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+}
+
+    
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #menu {
+        display: none !important;
+    }
+
+    .document {
+        box-shadow: none !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+}
+/* PRINT SETTINGS */
+@media print {
+
+    /* Default: transcript remains portrait */
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    /* Diploma: force landscape for this page only */
+    #diploma {
+        page: diplomaPage;
+    }
+
+    @page diplomaPage {
+        size: A4 landscape;
+        margin: 0;
+    }
+
+    /* Ensure the diploma fills the full page */
+    #diploma.document {
+        width: 297mm !important;
+        height: 210mm !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
 
     </style>
 </head>
@@ -281,7 +372,7 @@
         <div class="border-frame">
             <div class="content-area">
                 <div class="header-logo">
-                    <img src="logo.png" alt="ABC College Logo" class="logo-transcript editable" data-field="logoImage1">
+                    <img src="logo.png" alt="ABC College Logo" class="logo-transcript editable" data-field="logoImage1", style="filter: brightness(70%);">
                 </div>
                 <h1 class="college-name editable" data-field="collegeName1">GLOBAL CAREER DEVELOPMENT INSTITUTE</h1>
                 <p class="record-title editable" data-field="recordTitle">Record of Results</p>
@@ -289,15 +380,16 @@
                 <p class="statement-text">This is a statement that</p>
                 <h2 class="student-name editable" data-field="studentName1">Asad Subhani</h2>
                 <p class="statement-text">has attained</p>
-                <h3 class="diploma-title editable" data-field="diplomaTitle1">Diploma in Civil Engineering Drafting</h3>
+                <h3 class="diploma-title editable" data-field="diplomaTitle1">Certificate in Civil Engineering Drafting</h3>
 
                 <div class="results-table">
                     <table>
                         <tbody>
-                            <tr class="course-row"><td class="course-code editable" data-field="code1">UC101</td><td class="course-name editable" data-field="course1">Drafting Funamentals</td><td class="grade-column editable" data-field="grade1">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code1">Code</td><td class="course-name editable" data-field="course1", style="font-weight: bold;">Unit of Competency</td><td class="grade-column editable" data-field="grade1">Result</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code1">UC101</td><td class="course-name editable" data-field="course1">Drafting Fundamentals</td><td class="grade-column editable" data-field="grade1">C</td></tr>
                             <tr class="course-row"><td class="course-code editable" data-field="code2">UC102</td><td class="course-name editable" data-field="course2">Technical Lettering and Dimensioning</td><td class="grade-column editable" data-field="grade2">C</td></tr>
                             <tr class="course-row"><td class="course-code editable" data-field="code3">UC103</td><td class="course-name editable" data-field="course3">Geometrical Constructions and Engineering Curves</td><td class="grade-column editable" data-field="grade3">C</td></tr>
-                            <tr class="course-row"><td class="course-code editable" data-field="code4">UC104</td><td class="course-name editable" data-field="course4">Orthographic and Projection Techniques</td><td class="grade-column editable" data-field="grade4">C</td></tr>
+                            <tr class="course-row"><td class="course-code editable" data-field="code4">UC104</td><td class="course-name editable" data-field="course4">Orthographic Projection Techniques</td><td class="grade-column editable" data-field="grade4">C</td></tr>
                             <tr class="course-row"><td class="course-code editable" data-field="code5">UC105</td><td class="course-name editable" data-field="course5">Pictorial and Sectional Drawings</td><td class="grade-column editable" data-field="grade5">C</td></tr>
                             <tr class="course-row"><td class="course-code editable" data-field="code6">UC106</td><td class="course-name editable" data-field="course6">Engineering Symbols and Conventions</td><td class="grade-column editable" data-field="grade6">C</td></tr>
                             <tr class="course-row"><td class="course-code editable" data-field="code7">UC107</td><td class="course-name editable" data-field="course7">Building Drafting (Residential and Small Structures)</td><td class="grade-column editable" data-field="grade7">C</td></tr>
@@ -309,7 +401,7 @@
                 </div>
 
                 <p class="footer-note">
-                    The student has successfully completed the competencies listed above.<span class="editable" data-field="collegeName1Foot"></span>.
+                   RESULT: C = COMPETENT<span class="editable" data-field="collegeName1Foot"></span>.
                 </p>
 
                 <div class="signature-section-transcript">
@@ -321,7 +413,7 @@
                 <div class="footer-info">
                     <span class="left-footer editable" data-field="footerLeft"></span>
                     <span class="right-footer">
-                        Document No: <span class="editable" data-field="docNo">I-12345</span> | Issued on <span class="editable" data-field="issueDate1">2nd October 2025</span>
+                        Document No: <span class="editable" data-field="docNo">GCDI-190830</span> | Issued on <span class="editable" data-field="issueDate1">30 August 2019</span>
                     </span>
                 </div>
 
@@ -331,51 +423,51 @@
     
 
     <div class="document diploma-style" id="diploma">
-        <div class="diploma-content">
-            <div class="diploma-header">
-                <div class="logo-columns">
-                    <img src="logo.png" alt="XYZ Institute Logo" class="logo-diploma editable" data-field="logoImage2">
-                </div>
-                <h1 class="college-name-diploma editable" data-field="collegeName2">GLOBAL CAREER DEVELOPMENT INSTITUTE</h1>
+     <div class="diploma-content">
+    <div class="certificate-number editable" data-field="certificateNumber">Certificate No: 201908305</div>
+
+    <div class="diploma-header">
+        <div class="logo-columns">
+            <img src="logo.png" alt="XYZ Institute Logo" class="logo-diploma editable" data-field="logoImage2" style="filter: brightness(70%);">
+        </div>
+        <h1 class="college-name-diploma editable" data-field="collegeName2">GLOBAL CAREER DEVELOPMENT INSTITUTE</h1>
+    </div>
+
+    <div>
+        <p class="certify-text">This is to certify that</p>
+        <h3 class="student-name-diploma editable" data-field="studentName2"> Asad Subhani</h3>
+        <h3 class="student-id" data-field="studentName2" style="font-weight: 100;">Student ID: 1240</h3>
+        <p class="certify-text">has fulfilled the requirements for <br></p>
+        <h4 class="course-focus editable" data-field="courseFocus">Certificate in Civil Engineering Drafting</h4>
+        <p class="certify-text">and is therefore awarded this Certificate.</p>
+
+      <div class="details-grid">
+    <div class="detail-left">
+        <p class="detail-label">Duration: <span class="editable" data-field="durationNum">12 Months</span></p>
+        <p class="detail-subtext editable" data-field="durationRange">(13 Aug 2018 - 19 Aug 2019)</p>
+    </div>
+    <div class="detail-right">
+        <p class="detail-label">Dated <span class="editable" data-field="date">30 August 2019</span></p>
+        <p class="detail-subtext editable" data-field="year"></p>
+    </div>
+</div>
+
+
+        <div class="signatures-diploma">
+            <div class="signature-block">
+                <hr>
+                <p class="signature-role editable" data-field="rolePrincipal">Principal</p>
             </div>
-
-            <h2 class="diploma-main-title">DIPLOMA IN <span class="editable" data-field="diplomaTitle2"> <br> Civil Engineering Drafting</span></h2>
-
-            <p class="certify-text">This is to certify that</p>
-            <h3 class="student-name-diploma editable" data-field="studentName2">Mr. Asad Subhani</h3>
-            <p class="certify-text">has successfully completed the prescribed course<br>of study and training in</p>
-            <h4 class="course-focus editable" data-field="courseFocus">Civil Drafting</h4>
-            <p class="certify-text">of <span class="editable" data-field="durationText">one year's duration</span>, conducted by</p>
-            <p class="institute-award editable" data-field="instituteAward">Global Career Development Institute</p>
-            <p class="certify-text">and is therefore awarded this Diploma.</p>
-
-            <div class="details-grid">
-                <div>
-                    <p class="detail-label">Duration: <span class="editable" data-field="durationNum">12 Months</span></p>
-                    <p class="detail-subtext editable" data-field="durationRange">(Jan 2024 - Dec 2024)</p>
-                </div>
-                <div>
-                    <p class="detail-label">Date: <span class="editable" data-field="date">27 December</span>ignat</p>
-                    <p class="detail-subtext editable" data-field="year">2024</p>
-                </div>
-               
-                
-            </div>
-
-            <div class="signatures-diploma">
-                <div class="signature-block">
-                    <hr>
-                    <p class="signature-role editable" data-field="rolePrincipal">Principal</p>
-                </div>
-               
-            </div>
-
-             
-             </div>
-
         </div>
     </div>
-    
+
+    <!-- Address at bottom -->
+    <div class="diploma-address editable" data-field="diplomaAddress">
+     C-572 Gulshan-e-Anwar, Wah Cantt District Rawalpindi, Pakistan.
+    </div>
+
+</div>
+      
     <script>
         // Function to toggle the active document view
         function showDocument(docId) {
@@ -414,4 +506,3 @@
     </script>
 </body>
 </html>
-
